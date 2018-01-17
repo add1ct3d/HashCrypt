@@ -67,10 +67,8 @@ bool isFile(char* filename) {
     file = fopen(filename, "rb");
     if (file == NULL) {
         fclose(file);
-        return false;
-    }
+        return false; }
     else {
         fclose(file);
-        return true;
-    }
+        return true; }
 }
