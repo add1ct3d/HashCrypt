@@ -1,2 +1,5 @@
 # HashCrypt
-Secure file encryption through hashing
+
+Secure file encryption and decryption through salted passphrase hashing
+
+#
