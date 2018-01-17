@@ -19,7 +19,7 @@ uint32_t rc_crc32(uint32_t crc, const char *buf, size_t len) {
 				if (rem & 1) {
 					rem >>= 1;
 					rem ^= 0xedb88320; }
-                else {
+              			else {
 					rem >>= 1; }
 			table[i] = rem; }
 		have_table = 1; }
