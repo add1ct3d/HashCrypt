@@ -4,12 +4,12 @@
 #include <stdbool.h>
 #include <math.h>
 #include <conio.h>
-#include "CRC32.c"
 
-void encrypt(char* filename, char* seed);
+void encrypt(char*, char*);
 void decrypt(char* filename, char* seed);
 long getFileSize(char* filename);
 bool isFile(char* filename);
+char* stripDash(char* string);
 
 int main(int argc, char* argv[]) {
 
@@ -34,9 +34,9 @@ int main(int argc, char* argv[]) {
             exit(1); }
 
         if (strcmp(argv[2], "-encrypt") == 0) {
-            encrypt(argv[3], argv); }
+            encrypt(stripDash(argv[3]), stripDash(argv[4])); }
         else if (strcmp(argv[2], "-decrypt") == 0) {
-            decrypt(argv[3]); }
+            decrypt(stripDash(argv[3]), stripDash(argv[4])); }
         else {
             printf("Command not recognized: %s\n\n", argv[2]);
             printf("Expected Command: gcc hashcrypt.c -encrypt -file.txt -seed\n\n");
@@ -45,10 +45,9 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 
-void encrypt(char* filename, char* seed) {
-}
+void encrypt(char* filename, char* seed) {}
 
-void decrypt(char* filename, char* seed);
+void decrypt(char* filename, char* seed) {}
 
 // Returns the number of bytes in a file
 long getFileSize(char* filename) {
@@ -71,4 +70,9 @@ bool isFile(char* filename) {
     else {
         fclose(file);
         return true; }
+}
+
+// Strip first char '-' from string
+char* stripDash(char* string) {
+    return strchr(string, string[1]);
 }

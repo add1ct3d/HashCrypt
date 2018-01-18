@@ -10,7 +10,7 @@ uint32_t rc_crc32(uint32_t crc, const char *buf, size_t len) {
 	int i, j;
 	const char *p, *q;
 
-	/* Not thread safe -- no mutex */
+	/* Not thread safe - no mutex */
 	if (have_table == 0) {
 		/* Generate CRC table */
 		for (i = 0; i < 256; i++) {
@@ -18,17 +18,21 @@ uint32_t rc_crc32(uint32_t crc, const char *buf, size_t len) {
 			for (j = 0; j < 8; j++) {
 				if (rem & 1) {
 					rem >>= 1;
-					rem ^= 0xedb88320; }
-              			else {
-					rem >>= 1; }
-			table[i] = rem; }
-		have_table = 1; }
+					rem ^= 0xedb88320;
+				} else
+					rem >>= 1;
+			}
+			table[i] = rem;
+		}
+		have_table = 1;
+	}
 
 	crc = ~crc;
 	q = buf + len;
 	for (p = buf; p < q; p++) {
 		octet = *p;
-		crc = (crc >> 8) ^ table[(crc & 0xff) ^ octet]; }
+		crc = (crc >> 8) ^ table[(crc & 0xff) ^ octet];
+	}
 	return ~crc;
 }
 
