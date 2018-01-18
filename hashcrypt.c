@@ -30,14 +30,18 @@ int main(int argc, char* argv[]) {
     // Call encrypt or decrypt depending command
     if (argc > 4) {
         if (!isFile(stripDash(argv[3]))) {
-            printf("error locating file: %s\n", argv[3]);
+            printf("error locating file: %s\n", stripDash(argv[3]));
             exit(1); }
 
         char* seed = stripDash(argv[4]);
         if (argc > 5) {
             int i;
             for (i=5; i < argc; i++) {
-                strcat(seed, argv[5]); }
+                if (argv[i][0] == '-') {
+                    strcat(seed, stripDash(argv[i])); }
+                else {
+                  strcat(seed, argv[i]); }
+            }
         }
 
         if (strcmp(argv[2], "-encrypt") == 0) {
@@ -53,10 +57,10 @@ int main(int argc, char* argv[]) {
 }
 
 void encrypt(char* filename, char* seed) {
-    printf("ENCRYPT:\nFile Name: %s\nSeed: %s\n\n", filename, seed); }
+    printf("ENCRYPT:\nFile Name: %s\nSeed: %s\nHash: %d\n", filename, seed, hash(seed)); }
 
 void decrypt(char* filename, char* seed) {
-    printf("DECRYPT:\nFile Name: %s\nSeed: %s\n\n", filename, seed); }
+    printf("DECRYPT:\nFile Name: %s\nSeed: %s\nHash: %d\n", filename, seed, hash(seed)); }
 
 // Returns the number of bytes in a file
 long getFileSize(char* filename) {
@@ -85,5 +89,4 @@ bool isFile(char* filename) {
 char* stripDash(char* string) {
     return strchr(string, string[1]);
 }
-
 
