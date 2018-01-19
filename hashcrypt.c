@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
             int i;
             for (i=5; i < argc; i++) {
                 strcat(seed, " ");
-                strcat(seed, argv[i]);
+                strcat(seed, stripDash(argv[i]));
             }
         }
 
