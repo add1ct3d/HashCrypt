@@ -8,7 +8,6 @@
 
 void encrypt(char*, char*);
 void decrypt(char* filename, char* seed);
-long getFileSize(char* filename);
 bool isFile(char* filename);
 char* stripDash(char* string);
 uint32_t rc_crc32(uint32_t crc, const char *buf, size_t len);
@@ -40,16 +39,14 @@ int main(int argc, char* argv[]) {
         if (argc > 5) {
             int i;
             for (i=5; i < argc; i++) {
-                if (argv[i][0] == '-') {
-                    strcat(seed, stripDash(argv[i])); }
-                else {
-                    strcat(seed, argv[i]); }
+                strcat(seed, " ");
+                strcat(seed, argv[i]);
             }
         }
 
-        if (strcmp(argv[2], "-encrypt") == 0) {
+        if (strcmp(stripDash(argv[2]), "encrypt") == 0) {
             encrypt(stripDash(argv[3]), seed); }
-        else if (strcmp(argv[2], "-decrypt") == 0) {
+        else if (strcmp(stripDash(argv[2]), "decrypt") == 0) {
             decrypt(stripDash(argv[3]), seed); }
         else {
             printf("Command not recognized: %s\n\n", argv[2]);
@@ -60,23 +57,10 @@ int main(int argc, char* argv[]) {
 }
 
 void encrypt(char* filename, char* seed) {
-    printf("ENCRYPT:\nFile Name: %s\nSeed: %s\nHash: %d\n", filename, seed, hash(seed));
-
-    }
+    printf("ENCRYPT:\nFile Name: %s\nSeed: %s\nHash: %X\n", filename, seed, hash(seed)); }
 
 void decrypt(char* filename, char* seed) {
-    printf("DECRYPT:\nFile Name: %s\nSeed: %s\nHash: %d\n", filename, seed, hash(seed)); }
-
-// Returns the number of bytes in a file
-long getFileSize(char* filename) {
-    long size;
-    FILE* file;
-    file = fopen(filename, "rb");
-    fseek(file, 0, SEEK_END);
-    size = ftell(file);
-    fclose(file);
-    return size;
-}
+    printf("DECRYPT:\nFile Name: %s\nSeed: %s\nHash: %X\n", filename, seed, hash(seed)); }
 
 // Checks if file exists
 bool isFile(char* filename) {
@@ -92,7 +76,10 @@ bool isFile(char* filename) {
 
 // Strip first char '-' from string
 char* stripDash(char* string) {
-    return strchr(string, string[1]);
+    if (string[0] == '-') {
+        return strchr(string, string[1]); }
+    else {
+        return string; }
 }
 
 // CRC-32 Hashing Algorithm
@@ -112,21 +99,17 @@ uint32_t rc_crc32(uint32_t crc, const char *buf, size_t len) {
 			for (j = 0; j < 8; j++) {
 				if (rem & 1) {
 					rem >>= 1;
-					rem ^= 0xedb88320;
-				} else
-					rem >>= 1;
-			}
-			table[i] = rem;
-		}
-		have_table = 1;
-	}
+					rem ^= 0xedb88320; }
+				else
+					rem >>= 1; }
+			table[i] = rem; }
+		have_table = 1; }
 
 	crc = ~crc;
 	q = buf + len;
 	for (p = buf; p < q; p++) {
 		octet = *p;
-		crc = (crc >> 8) ^ table[(crc & 0xff) ^ octet];
-	}
+		crc = (crc >> 8) ^ table[(crc & 0xff) ^ octet]; }
 	return ~crc;
 }
 
@@ -134,4 +117,3 @@ uint32_t rc_crc32(uint32_t crc, const char *buf, size_t len) {
 int hash(const char *s) {
 	return rc_crc32(0, s, strlen(s));
 }
-
