@@ -10,7 +10,9 @@ void encrypt(char*, char*);
 void decrypt(char* filename, char* seed);
 bool isFile(char* filename);
 char* stripDash(char* string);
+char* reverse(char *str);
 unsigned long hash(const char *s);
+unsigned long CRC32(const char *s);
 long getFileSize(char* filename);
 int getDigitSize(long long number);
 
@@ -58,43 +60,14 @@ int main(int argc, char* argv[]) {
 }
 
 void encrypt(char* filename, char* seed) {
-    printf("ENCRYPT:\nFile Name: %s\nSeed: %s\nHash: %ld\n", filename, seed, hash(seed));
+    printf("ENCRYPT:\nFile Name: %s\nSeed: %s\nHash: %ld\nReverse: %s\nReverse Hash: %ld\n\n",
+            filename, seed, hash(seed), reverse(seed), hash(reverse(seed)));
 
     int i;
-    int j;
-    int byte;
-    unsigned long long encrypted [getFileSize(filename)];
-
-    // Determine byte size from hash value
-    if (abs(hash(seed)) == 0) {
-        printf("Seed is too weak");
-        exit(1); }
-    else if (abs(hash(seed)) > 0 && abs(hash(seed)) < 225) {
-        byte = 2; }
-    else if (abs(hash(seed)) >= 225 && abs(hash(seed)) < 65535) {
-        byte = 3; }
-    else if (abs(hash(seed)) >= 65535 && abs(hash(seed)) < 16777215) {
-        byte = 4; }
-    else if (abs(hash(seed)) >= 16777215 && abs(hash(seed)) < 4294967295) {
-        byte = 5; }
-    else if (abs(hash(seed)) >= 4294967295 && abs(hash(seed)) < 1099511627775) {
-        byte = 6; }
-    else if (abs(hash(seed)) >= 1099511627775 && abs(hash(seed)) < 281474976710655) {
-        byte = 7; }
-    else if (abs(hash(seed)) >= 281474976710655 && abs(hash(seed)) < 72057594037927935) {
-        byte = 8; }
-    else if (abs(hash(seed)) >= 72057594037927935 && abs(hash(seed)) < 9223372036854775807) {
-        byte = 9; }
-    else {
-        printf("Invalid seed");
-        exit(1); }
-    printf("Byte: %d\n", byte);
-
     unsigned char* buffer = malloc(getFileSize(filename) * sizeof (*buffer));
     FILE* file = fopen(filename, "rb");
     fread(buffer, getFileSize(filename), 1, file); //buffer[i]
     fclose(file);
-
     printf("Hex Value: ");
     for(i=0;i<getFileSize(filename);i++){
         printf("%X ", buffer[i]);
@@ -124,8 +97,26 @@ char* stripDash(char* string) {
         return string; }
 }
 
+// Reverse string
+char* reverse(char *str) {
+    int len = strlen(str);
+    char *p1 = str;
+    char *p2 = str + len - 1;
+    while (p1 < p2) {
+        char tmp = *p1;
+        *p1++ = *p2;
+        *p2-- = tmp;
+    }
+    return str;
+}
+
+// Generate Hashing key
+unsigned long hash(const char *string) {
+    return CRC32(string);
+}
+
 // CRC-32 Hashing Algorithm
-unsigned long hash(const char *buf) {
+unsigned long CRC32(const char *buf) {
     int len = strlen(buf);
     unsigned long crc = 0;
 	static unsigned int table[256];
