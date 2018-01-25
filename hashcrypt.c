@@ -7,12 +7,13 @@
 #include <string.h>
 #include <stdbool.h>
 
-void encrypt(char*, char*);
-void decrypt(char* filename, char* seed);
-bool isFile(char* filename);
-char* stripDash(char* string);
+void encrypt (char*, char*);
+void decrypt (char* filename, char* seed);
+unsigned long long hash (char* seed);
+bool isFile (char* filename);
+char* stripDash (char* string);
 
-int main(int argc, char* argv[]) {
+int main (int argc, char* argv[]) {
 
     // Exit program if command is incomplete
     if (argc == 2) {
@@ -57,15 +58,20 @@ int main(int argc, char* argv[]) {
 }
 
 // Encrypt File
-void encrypt(char* filename, char* seed) {
+void encrypt (char* filename, char* seed) {
     printf("ENCRYPT:\nFile Name: %s\nSeed: %s\n", filename, seed); }
 
 // Decrypt File
-void decrypt(char* filename, char* seed) {
+void decrypt (char* filename, char* seed) {
     printf("DECRYPT:\nFile Name: %s\nSeed: %s\n", filename, seed); }
 
+// Hash seed using ?? hashing algorithm
+unsigned long long hash (char* seed) {
+     //TODO
+}
+
 // Checks if file exists
-bool isFile(char* filename) {
+bool isFile (char* filename) {
     FILE *file;
     file = fopen(filename, "rb");
     if (file == NULL) {
@@ -77,7 +83,7 @@ bool isFile(char* filename) {
 }
 
 // Strip first char '-' from string
-char* stripDash(char* string) {
+char* stripDash (char* string) {
     if (string[0] == '-') {
         return strchr(string, string[1]); }
     else {
