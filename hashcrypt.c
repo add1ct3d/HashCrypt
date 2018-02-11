@@ -9,9 +9,10 @@
 
 void encrypt (char*, char*);
 void decrypt (char* filename, char* seed);
-unsigned long long hash (char* seed);
+unsigned long hash (char* seed);
 bool isFile (char* filename);
 char* stripDash (char* string);
+long getFileSize(char* filename);
 
 int main (int argc, char* argv[]) {
 
@@ -49,15 +50,43 @@ int main (int argc, char* argv[]) {
 
 // Encrypt File
 void encrypt (char* filename, char* seed) {
-    printf("ENCRYPT:\nFile Name: %s\nSeed: %s\n", filename, seed); }
+    printf("ENCRYPT:\nFile Name: %s\nSeed: %s\nHash: %lX\n", filename, seed, hash(seed)); // DEL
+
+    printf("SIZE: %d\n", sizeof(hash(seed))*2);
+
+    int i;
+    char buffer [sizeof(hash(seed))*2];
+    char products [sizeof(hash(seed))];
+    char binary[getFileSize(filename)];
+    sprintf (buffer, "%lX", hash(seed));
+    FILE *file = fopen(filename, "rb");
+    fread(binary, sizeof(char), getFileSize(filename), file);
+
+    for (i=0; i<getFileSize(filename); i++ ) {
+        printf("%X ", binary[i]); } printf("\n");
+
+    for (i=0; i< sizeof(hash(seed))*2; i+= 2 ) {
+        printf("%c%c ", buffer[i], buffer[i+1]); }
+
+    int j = 0;
+    for (i=0; i<sizeof(hash(seed))/2; i+= 2 ) {
+        products[j] = buffer[i];
+        strcat(products[j], buffer[i+1]);
+        j++; }
+
+    printf("OK");
+
+    for (i=0; i< sizeof(hash(seed)); i++ ) {
+        printf("%c ", products[i]); }
+    }
 
 // Decrypt File
 void decrypt (char* filename, char* seed) {
     printf("DECRYPT:\nFile Name: %s\nSeed: %s\n", filename, seed); }
 
 // Hash seed using ?? hashing algorithm
-unsigned long long hash (char* seed) {
-     //TODO
+unsigned long hash (char* seed) {
+     return CRC32(seed);
 }
 
 // Checks if file exists
@@ -78,4 +107,14 @@ char* stripDash (char* string) {
         return strchr(string, string[1]); }
     else {
         return string; }
+}
+
+long getFileSize(char* filename) {
+    long size;
+    FILE* file;
+    file = fopen(filename, "rb");
+    fseek(file, 0, SEEK_END);
+    size = ftell(file);
+    fclose(file);
+    return size;
 }
