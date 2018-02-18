@@ -2,6 +2,9 @@
 // Made by Isaac Delly
 // https://github.com/Isaacdelly/HashCrypt
 
+// TODO
+// 2 sprintfs in for loop %c%c = unsigned char
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
