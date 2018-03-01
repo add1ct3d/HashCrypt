@@ -52,28 +52,27 @@ int main (int argc, char* argv[]) {
 // Encrypt File
 void encrypt (char* filename, char* seed) {
     printf("ENCRYPT:\nFile Name: %s\nSeed: %s\nHash: %lX\n", filename, seed, toHash(seed)); // DEL
-    printf("Hash Size: %d Bytes\n", sizeof(toHash(seed))); // DEL
+    printf("Hash Size: %d Bytes\n", sizeof(toHash(seed)));                                  // DEL
 
     int i; int j;
     char buffer [sizeof(toHash(seed))*2];
     char binary[getFileSize(filename)];
     char hash[sizeof(toHash(seed))];
-    printf("Size of Hash[]: %d Bytes\n", sizeof(hash));  // DEL
+    printf("Size of Hash[]: %d Bytes\n", sizeof(hash));                                      // DEL
     sprintf (buffer, "%lX", toHash(seed));
     FILE *file = fopen(filename, "rb");
     fread(binary, sizeof(char), getFileSize(filename), file);
 
-    printf("File Contents: ");                  // DEL
-    for (i=0; i<getFileSize(filename); i++ ) {  // DEL
-        printf("%X ", binary[i]); }             // DEL
+    printf("File Contents: ");                                                               // DEL
+    for (i=0; i<getFileSize(filename); i++ ) {                                               // DEL
+        printf("%X ", binary[i]); }                                                          // DEL
 
-    printf("\nGrouped Hash: ");             //DEL
+    printf("\nGrouped Hash: ");                                                              //DEL
 
-    for (i=0; i<sizeof(toHash(seed))*2; i+= 2 ) {
+    printf("TYPE: %d", sizeof(buffer[1]));
+    printf("\nBinary: -%c-", buffer[1]);
 
-        // TODO: FIND A WAY TO COMBINE BINARY[i] AND BINARY[i+1] INTO HASH[]
-
-    }
+        // TODO: FIND A WAY TO COMBINE BUFFER[i] AND BUFFER[i+1] INTO HASH[]
 
     printf("\n\n"); // DEL
     }
