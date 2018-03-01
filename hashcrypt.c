@@ -93,7 +93,7 @@ void decrypt (char* filename, char* seed) {
     unsigned char hash[sizeof(toHash(seed))];
     unsigned char decrypted[sizeof(toHash(seed)) * getFileSize(filename)];
 
-    // Convert hash int into indexable unsigned hash[]
+    // Convert hashed seed into indexable unsigned hash[]
     int x = toHash(seed);
     j = sizeof(toHash(seed))-1;
     for (size_t i = 0; i < sizeof(x); ++i) {
