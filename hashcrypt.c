@@ -13,7 +13,6 @@ unsigned long toHash (char* seed);
 bool isFile (char* filename);
 char* stripDash (char* string);
 long getFileSize(char* filename);
-char *toPointer(volatile char iptr);
 
 int main (int argc, char* argv[]) {
 
@@ -58,6 +57,7 @@ void encrypt (char* filename, char* seed) {
     int i; int j;
     unsigned char binary[getFileSize(filename)];
     unsigned char hash[sizeof(toHash(seed))];
+    unsigned char encrypted[sizeof(toHash(seed)) * getFileSize(filename)];
 
     // Convert hashed int into indexable unsigned hash[] of one byte each
     int x = toHash(seed);
@@ -80,8 +80,15 @@ void encrypt (char* filename, char* seed) {
     for (i=0; i<getFileSize(filename); i++ ) {                                           // DEL
         printf("%0X ", binary[i]); }                                                     // DEL
 
-    // TODO Overflow
-
+    // Overflow binary[] + hash[] = encrypted[] to created an unidentifiable value
+    // End Overflow at sizeof(toHash(seed))%i == 0 to hide original byte length
+    i=0;
+    while (i<=getFileSize(filename) && sizeof(toHash(seed))%i != 0) {
+        encrypted[i] = binary[i] + hash[i];
+        i++;
+        if (i > sizeof(toHash(seed))) {
+            i = 0; }
+    }
 
     printf("\n\n"); // DEL
     }
