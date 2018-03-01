@@ -123,7 +123,7 @@ void decrypt (char* filename, char* seed) {
     for (i=0; i<getFileSize(filename); i++ ) {                                           // DEL
         printf("%02X ", binary[i]); }                                                     // DEL
 
-    // Underflow binary[] + hash[] = encrypted[] to created an unidentifiable value
+    // Underflow binary[] - hash[] = encrypted[] to revert back to original value
     i=0; j=0;
     while (i<getFileSize(filename)) {
         decrypted[i] = binary[j] - hash[j];
@@ -139,7 +139,7 @@ void decrypt (char* filename, char* seed) {
     fwrite(decrypted, sizeof(decrypted), 1, decrypted_data);
 }
 
-// Hash seed using ?? hashing algorithm
+// Hash seed using CRC-32 hashing algorithm
 unsigned long toHash (char* seed) {
      return CRC32(seed);
 }
@@ -164,6 +164,7 @@ char* stripDash (char* string) {
         return string; }
 }
 
+// Return number of bytes in a file
 long getFileSize(char* filename) {
     long size;
     FILE* file;
