@@ -2,9 +2,6 @@
 // Made by Isaac Delly
 // https://github.com/Isaacdelly/HashCrypt
 
-// TODO
-// 2 sprintfs in for loop %c%c = unsigned char
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,10 +9,11 @@
 
 void encrypt (char*, char*);
 void decrypt (char* filename, char* seed);
-unsigned long hash (char* seed);
+unsigned long toHash (char* seed);
 bool isFile (char* filename);
 char* stripDash (char* string);
 long getFileSize(char* filename);
+char *toPointer(volatile char iptr);
 
 int main (int argc, char* argv[]) {
 
@@ -53,34 +51,31 @@ int main (int argc, char* argv[]) {
 
 // Encrypt File
 void encrypt (char* filename, char* seed) {
-    printf("ENCRYPT:\nFile Name: %s\nSeed: %s\nHash: %lX\n", filename, seed, hash(seed)); // DEL
+    printf("ENCRYPT:\nFile Name: %s\nSeed: %s\nHash: %lX\n", filename, seed, toHash(seed)); // DEL
+    printf("Hash Size: %d Bytes\n", sizeof(toHash(seed))); // DEL
 
-    printf("SIZE: %d\n", sizeof(hash(seed))*2);
-
-    int i;
-    char buffer [sizeof(hash(seed))*2];
-    char products [sizeof(hash(seed))];
+    int i; int j;
+    char buffer [sizeof(toHash(seed))*2];
     char binary[getFileSize(filename)];
-    sprintf (buffer, "%lX", hash(seed));
+    char hash[sizeof(toHash(seed))];
+    printf("Size of Hash[]: %d Bytes\n", sizeof(hash));  // DEL
+    sprintf (buffer, "%lX", toHash(seed));
     FILE *file = fopen(filename, "rb");
     fread(binary, sizeof(char), getFileSize(filename), file);
 
-    for (i=0; i<getFileSize(filename); i++ ) {
-        printf("%X ", binary[i]); } printf("\n");
+    printf("File Contents: ");                  // DEL
+    for (i=0; i<getFileSize(filename); i++ ) {  // DEL
+        printf("%X ", binary[i]); }             // DEL
 
-    for (i=0; i< sizeof(hash(seed))*2; i+= 2 ) {
-        printf("%c%c ", buffer[i], buffer[i+1]); }
+    printf("\nGrouped Hash: ");             //DEL
 
-    int j = 0;
-    for (i=0; i<sizeof(hash(seed))/2; i+= 2 ) {
-        products[j] = buffer[i];
-        strcat(products[j], buffer[i+1]);
-        j++; }
+    for (i=0; i<sizeof(toHash(seed))*2; i+= 2 ) {
 
-    printf("OK");
+        // TODO: FIND A WAY TO COMBINE BINARY[i] AND BINARY[i+1] INTO HASH[]
 
-    for (i=0; i< sizeof(hash(seed)); i++ ) {
-        printf("%c ", products[i]); }
+    }
+
+    printf("\n\n"); // DEL
     }
 
 // Decrypt File
@@ -88,7 +83,7 @@ void decrypt (char* filename, char* seed) {
     printf("DECRYPT:\nFile Name: %s\nSeed: %s\n", filename, seed); }
 
 // Hash seed using ?? hashing algorithm
-unsigned long hash (char* seed) {
+unsigned long toHash (char* seed) {
      return CRC32(seed);
 }
 
