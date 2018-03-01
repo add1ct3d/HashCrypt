@@ -123,7 +123,7 @@ void decrypt (char* filename, char* seed) {
     for (i=0; i<getFileSize(filename); i++ ) {                                           // DEL
         printf("%02X ", binary[i]); }                                                     // DEL
 
-    // Underflow binary[] - hash[] = encrypted[] to revert back to original value
+    // Underflow binary[] - hash[] = decrypted[] to revert back to original value
     i=0; j=0;
     while (i<getFileSize(filename)) {
         decrypted[i] = binary[j] - hash[j];
