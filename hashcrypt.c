@@ -53,13 +53,13 @@ void encrypt (char* filename, char* seed) {
     printf("ENCRYPT:\nFile Name: %s\nSeed: %s\nHash: %lX\n", filename, seed, toHash(seed)); // DEL
     printf("Hash Size: %d Bytes\n", sizeof(toHash(seed)));                                  // DEL
 
-    // Declare common variables and char[]
+    // Declare common variables and unsigned char[]
     int i; int j;
     unsigned char binary[getFileSize(filename)];
     unsigned char hash[sizeof(toHash(seed))];
     unsigned char encrypted[sizeof(toHash(seed)) * getFileSize(filename)];
 
-    // Convert hashed int into indexable unsigned hash[] of one byte each
+    // Convert hash int into indexable unsigned hash[] of one byte each
     int x = toHash(seed);
     j = sizeof(toHash(seed))-1;
     for (size_t i = 0; i < sizeof(x); ++i) {
@@ -81,21 +81,65 @@ void encrypt (char* filename, char* seed) {
         printf("%0X ", binary[i]); }                                                     // DEL
 
     // Overflow binary[] + hash[] = encrypted[] to created an unidentifiable value
-    // End Overflow at sizeof(toHash(seed))%i == 0 to hide original byte length
-    i=0;
-    while (i<=getFileSize(filename) && sizeof(toHash(seed))%i != 0) {
-        encrypted[i] = binary[i] + hash[i];
-        i++;
-        if (i > sizeof(toHash(seed))) {
-            i = 0; }
+    // End overflow at sizeof(toHash(seed))%i == 0 to hide original byte length
+    i=0; j=0;
+    while (i<=getFileSize(filename) || i%sizeof(toHash(seed)) != 0) {
+        encrypted[i] = binary[j] + hash[j];
+        printf("\n[%d] %02X = %02X + %02X", i, encrypted[j], binary[j], hash[j]);           // DEL
+        i++; j++;
+        if (j >= sizeof(toHash(seed))) {
+            j = 0; }
     }
 
-    printf("\n\n"); // DEL
-    }
+    // Write encrypted data to file
+    FILE* encrypted_data;
+    encrypted_data = fopen(filename,"wb");
+    fwrite(encrypted, sizeof(encrypted), 1, encrypted_data);
+}
 
 // Decrypt File
 void decrypt (char* filename, char* seed) {
-    printf("DECRYPT:\nFile Name: %s\nSeed: %s\n", filename, seed); }
+    printf("DECRYPT:\nFile Name: %s\nSeed: %s\n", filename, seed);                          // DEL
+    printf("Hash Size: %d Bytes\n", sizeof(toHash(seed)));                                  // DEL
+
+    // Declare common variables and unsigned char[]
+    int i; int j;
+    unsigned char binary[getFileSize(filename)];
+    unsigned char hash[sizeof(toHash(seed))];
+    unsigned char decrypted[sizeof(toHash(seed)) * getFileSize(filename)];
+
+    // Convert hash int into indexable unsigned hash[] of one byte each
+    int x = toHash(seed);
+    j = sizeof(toHash(seed))-1;
+    for (size_t i = 0; i < sizeof(x); ++i) {
+        unsigned char byte = *((unsigned char *)&x + i);
+        hash[j] = (unsigned)byte;
+        j--; }
+
+    // Collect file contents into binary[]
+    FILE *file = fopen(filename, "rb");
+    fread(binary, sizeof(char), getFileSize(filename), file);
+
+    printf("\nFile Contents: ");                                                         // DEL
+    for (i=0; i<getFileSize(filename); i++ ) {                                           // DEL
+        printf("%0X ", binary[i]); }                                                     // DEL
+
+    // Underflow binary[] + hash[] = encrypted[] to created an unidentifiable value
+    // End underflow at i%sizeof(toHash(seed)) == 0 to hide original byte length
+    i=0; j=0;
+    while (i<=getFileSize(filename)) {
+        decrypted[i] = binary[j] - hash[j];
+        printf("\n[%d] %02X = %02X - %02X", i, decrypted[j], binary[j], hash[j]);           // DEL
+        i++; j++;
+        if (j >= sizeof(toHash(seed))) {
+            j = 0; }
+    }
+
+    // Write decrypted data to file
+    FILE* decrypted_data;
+    decrypted_data = fopen(filename,"wb");
+    fwrite(decrypted, sizeof(decrypted), 1, decrypted_data);
+}
 
 // Hash seed using ?? hashing algorithm
 unsigned long toHash (char* seed) {
