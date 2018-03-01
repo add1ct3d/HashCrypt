@@ -12,7 +12,7 @@ void decrypt (char* filename, char* seed);
 unsigned long toHash (char* seed);
 bool isFile (char* filename);
 char* stripDash (char* string);
-long getFileSize(char* filename);
+long getFileSize (char* filename);
 
 int main (int argc, char* argv[]) {
 
@@ -146,7 +146,7 @@ char* stripDash (char* string) {
 }
 
 // Returns number of bytes in a file
-long getFileSize(char* filename) {
+long getFileSize (char* filename) {
     long size;
     FILE* file;
     file = fopen(filename, "rb");
