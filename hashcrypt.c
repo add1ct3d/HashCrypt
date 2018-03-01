@@ -54,25 +54,34 @@ void encrypt (char* filename, char* seed) {
     printf("ENCRYPT:\nFile Name: %s\nSeed: %s\nHash: %lX\n", filename, seed, toHash(seed)); // DEL
     printf("Hash Size: %d Bytes\n", sizeof(toHash(seed)));                                  // DEL
 
+    // Declare common variables and char[]
     int i; int j;
-    char buffer [sizeof(toHash(seed))*2];
-    char binary[getFileSize(filename)];
-    char hash[sizeof(toHash(seed))];
-    printf("Size of Hash[]: %d Bytes\n", sizeof(hash));                                      // DEL
-    sprintf (buffer, "%lX", toHash(seed));
+    unsigned char binary[getFileSize(filename)];
+    unsigned char hash[sizeof(toHash(seed))];
+
+    // Convert hashed int into indexable unsigned hash[] of one byte each
+    int x = toHash(seed);
+    j = sizeof(toHash(seed))-1;
+    for (size_t i = 0; i < sizeof(x); ++i) {
+        unsigned char byte = *((unsigned char *)&x + i);
+        hash[j] = (unsigned)byte;
+        j--; }
+
+    printf("Grouped Hash: ");                                                           //DEL
+    for(i=0; i<sizeof(toHash(seed)); i++) {                                             //DEL
+        printf("%0X ", hash[i]);                                                        //DEL
+    }                                                                                   //DEL
+
+    // Collect file contents into binary[]
     FILE *file = fopen(filename, "rb");
     fread(binary, sizeof(char), getFileSize(filename), file);
 
-    printf("File Contents: ");                                                               // DEL
-    for (i=0; i<getFileSize(filename); i++ ) {                                               // DEL
-        printf("%X ", binary[i]); }                                                          // DEL
+    printf("\nFile Contents: ");                                                         // DEL
+    for (i=0; i<getFileSize(filename); i++ ) {                                           // DEL
+        printf("%0X ", binary[i]); }                                                     // DEL
 
-    printf("\nGrouped Hash: ");                                                              //DEL
+    // TODO Overflow
 
-    printf("TYPE: %d", sizeof(buffer[1]));
-    printf("\nBinary: -%c-", buffer[1]);
-
-        // TODO: FIND A WAY TO COMBINE BUFFER[i] AND BUFFER[i+1] INTO HASH[]
 
     printf("\n\n"); // DEL
     }
