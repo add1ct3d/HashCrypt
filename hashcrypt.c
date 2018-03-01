@@ -78,16 +78,15 @@ void encrypt (char* filename, char* seed) {
 
     printf("\nFile Contents: ");                                                         // DEL
     for (i=0; i<getFileSize(filename); i++ ) {                                           // DEL
-        printf("%0X ", binary[i]); }                                                     // DEL
+        printf("%02X ", binary[i]); }                                                     // DEL
 
     // Overflow binary[] + hash[] = encrypted[] to created an unidentifiable value
-    // End overflow at sizeof(toHash(seed))%i == 0 to hide original byte length
     i=0; j=0;
-    while (i<=getFileSize(filename) || i%sizeof(toHash(seed)) != 0) {
+    while (i<getFileSize(filename)) {
         encrypted[i] = binary[j] + hash[j];
         printf("\n[%d] %02X = %02X + %02X", i, encrypted[j], binary[j], hash[j]);           // DEL
         i++; j++;
-        if (j >= sizeof(toHash(seed))) {
+        if (j > sizeof(toHash(seed))) {
             j = 0; }
     }
 
@@ -122,16 +121,15 @@ void decrypt (char* filename, char* seed) {
 
     printf("\nFile Contents: ");                                                         // DEL
     for (i=0; i<getFileSize(filename); i++ ) {                                           // DEL
-        printf("%0X ", binary[i]); }                                                     // DEL
+        printf("%02X ", binary[i]); }                                                     // DEL
 
     // Underflow binary[] + hash[] = encrypted[] to created an unidentifiable value
-    // End underflow at i%sizeof(toHash(seed)) == 0 to hide original byte length
     i=0; j=0;
-    while (i<=getFileSize(filename)) {
+    while (i<getFileSize(filename)) {
         decrypted[i] = binary[j] - hash[j];
-        printf("\n[%d] %02X = %02X - %02X", i, decrypted[j], binary[j], hash[j]);           // DEL
+        printf("\n[%d] %02X = %02X - %02X", i, decrypted[j], binary[j], hash[j]);        // DEL
         i++; j++;
-        if (j >= sizeof(toHash(seed))) {
+        if (j > sizeof(toHash(seed))) {
             j = 0; }
     }
 
