@@ -57,7 +57,7 @@ void encrypt (char* filename, char* seed) {
     unsigned char hash[sizeof(toHash(seed))];
     unsigned char encrypted[sizeof(toHash(seed)) * getFileSize(filename)];
 
-    // Convert hashed seed into indexable unsigned hash[]
+    // Convert hashed seed into unsigned char hash[]
     int x = toHash(seed);
     j = sizeof(toHash(seed))-1;
     for (size_t i = 0; i < sizeof(x); ++i) {
@@ -65,15 +65,15 @@ void encrypt (char* filename, char* seed) {
         hash[j] = (unsigned)byte;
         j--; }
 
-    // Collect target file contents into binary[]
+    // Collect target file contents into unsigned char binary[]
     FILE *file = fopen(filename, "rb");
     fread(binary, sizeof(char), getFileSize(filename), file);
 
-    // Overflow binary[] + hash[] = encrypted[] to created an unidentifiable value
-    i=0; j=0;
-    while (i<getFileSize(filename)) {
+    // Overflow binary[] + hash[] = encrypted[] to create an unidentifiable hex value
+    j=0;
+    for (i=0; i<getFileSize(filename); i++) {
         encrypted[i] = binary[j] + hash[j];
-        i++; j++;
+        j++;
         if (j > sizeof(toHash(seed))) {
             j = 0; }
     }
@@ -93,7 +93,7 @@ void decrypt (char* filename, char* seed) {
     unsigned char hash[sizeof(toHash(seed))];
     unsigned char decrypted[sizeof(toHash(seed)) * getFileSize(filename)];
 
-    // Convert hashed seed into indexable unsigned hash[]
+    // Convert hashed seed into unsigned char hash[]
     int x = toHash(seed);
     j = sizeof(toHash(seed))-1;
     for (size_t i = 0; i < sizeof(x); ++i) {
@@ -101,15 +101,15 @@ void decrypt (char* filename, char* seed) {
         hash[j] = (unsigned)byte;
         j--; }
 
-    // Collect target file contents into binary[]
+    // Collect target file contents into unsigned char binary[]
     FILE *file = fopen(filename, "rb");
     fread(binary, sizeof(char), getFileSize(filename), file);
 
-    // Underflow binary[] - hash[] = decrypted[] to revert back to original value
-    i=0; j=0;
-    while (i<getFileSize(filename)) {
+    // Underflow binary[] - hash[] = decrypted[] to revert back to original hex value
+    j=0;
+    for (i=0; i<getFileSize(filename); i++) {
         decrypted[i] = binary[j] - hash[j];
-        i++; j++;
+        j++;
         if (j > sizeof(toHash(seed))) {
             j = 0; }
     }
@@ -145,7 +145,7 @@ char* stripDash (char* string) {
         return string; }
 }
 
-// Return number of bytes in a file
+// Returns number of bytes in a file
 long getFileSize(char* filename) {
     long size;
     FILE* file;
