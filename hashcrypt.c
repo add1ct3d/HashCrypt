@@ -72,9 +72,9 @@ void encrypt (char* filename, char* seed) {
     // Overflow binary[] + hash[] = encrypted[] to create an unidentifiable hex value
     j=0;
     for (i=0; i<getFileSize(filename); i++) {
-        encrypted[i] = binary[j] + hash[j];
+        encrypted[i] = binary[i] + hash[j];
         j++;
-        if (j > sizeof(toHash(seed))) {
+        if (j >= sizeof(toHash(seed))) {
             j = 0; }
     }
 
@@ -82,6 +82,7 @@ void encrypt (char* filename, char* seed) {
     FILE* encrypted_data;
     encrypted_data = fopen(filename,"wb");
     fwrite(encrypted, sizeof(binary), 1, encrypted_data);
+    printf("\n%s encrypted successfully\n", filename);
 }
 
 // Decrypt File
@@ -108,9 +109,9 @@ void decrypt (char* filename, char* seed) {
     // Underflow binary[] - hash[] = decrypted[] to revert back to original hex value
     j=0;
     for (i=0; i<getFileSize(filename); i++) {
-        decrypted[i] = binary[j] - hash[j];
+        decrypted[i] = binary[i] - hash[j];
         j++;
-        if (j > sizeof(toHash(seed))) {
+        if (j >= sizeof(toHash(seed))) {
             j = 0; }
     }
 
@@ -118,6 +119,7 @@ void decrypt (char* filename, char* seed) {
     FILE* decrypted_data;
     decrypted_data = fopen(filename,"wb");
     fwrite(decrypted, sizeof(binary), 1, decrypted_data);
+    printf("\n%s decrypted successfully\n", filename);
 }
 
 // Hash seed using CRC-32 hashing algorithm
