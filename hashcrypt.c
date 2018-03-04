@@ -17,30 +17,30 @@ long getFileSize (char* filename);
 int main (int argc, char* argv[]) {
 
     // Exit program if command is incomplete
-    if (argc < 5) {
-        printf("ERROR: Unable To Process Command\nExpected Command: gcc hashcrypt.c -encrypt -file.txt -seed\n");
+    if (argc < 4) {
+        printf("\nERROR: Unable To Process Command\nExpected Command: gcc hashcrypt.c -encrypt -file.txt -seed\n");
         exit(1); }
 
     // Check if file exists
-    if (!isFile(stripDash(argv[3]))) {
-        printf("ERROR: Error Locating File %s\n", stripDash(argv[3]));
+    if (!isFile(stripDash(argv[2]))) {
+        printf("ERROR: Error Locating File %s\n", stripDash(argv[2]));
         exit(1); }
 
     // Combine seed args to one string
-    char* seed = stripDash(argv[4]);
-    if (argc > 5) {
+    char* seed = stripDash(argv[3]);
+    if (argc > 4) {
         int i;
-        for (i=5; i < argc; i++) {
+        for (i=4; i < argc; i++) {
             strcat(seed, " ");
             strcat(seed, stripDash(argv[i]));
         }
     }
 
     // Call encrypt or decrypt
-    if (strcmp(stripDash(argv[2]), "encrypt") == 0) {
-        encrypt(stripDash(argv[3]), seed); }
-    else if (strcmp(stripDash(argv[2]), "decrypt") == 0) {
-        decrypt(stripDash(argv[3]), seed); }
+    if (strcmp(stripDash(argv[1]), "encrypt") == 0) {
+        encrypt(stripDash(argv[2]), seed); }
+    else if (strcmp(stripDash(argv[1]), "decrypt") == 0) {
+        decrypt(stripDash(argv[2]), seed); }
     else {
         printf("ERROR: Unable To Process Command\nExpected Command: gcc hashcrypt.c -encrypt -file.txt -seed\n");
         exit(1); }
@@ -155,9 +155,10 @@ bool isFile (char* filename) {
 
 // Strip first char '-' from string
 char* stripDash (char* string) {
-    while (string[0] == '-') {
-        string = strchr(string, string[1]); }
-    return string;
+    if (string[0] == '-') {
+        return strchr(string, string[1]); }
+    else {
+        return string; }
 }
 
 // Returns number of bytes in a file
