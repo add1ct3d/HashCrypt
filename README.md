@@ -56,12 +56,12 @@ a.exe -commmand -file -seed
 
 This program works by treating the binary data of the target file as an unsigned char array, where each index of the array holds one byte of the target file's code. It then hashes the given seed into a random hexidecimal using a hashing algorithm.
 
-Using both the file's hex values, and the hashed hex values, the program combines them together to add, or in many cases overflow, into an arbitrary byte value. The new encrypted data is unrecognizable and has no correlation to the orginal data because each byte is added by unique, secure, hashed value.
+Using both the file's hex values, and the hashed hex values, the program combines them together to add, or in many cases overflow, into an arbitrary byte value. The new encrypted data is unrecognizable and has no correlation to the orginal data because each byte is added by unique portion of the 32 character hexidecimal hash value.
 
 
 Contents of Text File: | "hello" | Hex Value of File Contents: |__68 65 6C 6C 6F__ 
 ------------|------------|------------|------------
-__Seed String:__ | __"apple"__ | __Hashed Seed:__ |__A9 2E D0 50 A9 ...__
+__Seed String:__ | __"apple"__ | __Hashed Seed:__ |__A9 2E D0 50 A9 ...>__
 X | X | __Encypted Data:__ |__11 93 3C BC 18__
 
 
