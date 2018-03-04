@@ -84,7 +84,11 @@ void encrypt (char* filename, char* seed) {
     j=0;
     for (i=0; i<getFileSize(filename); i++) {
         encrypted[i] = binary[i] + hash[j];
-        printf("\n%02X = %02X + %02X", encrypted[i], binary[i], hash[j]);
+         int pre = snprintf(NULL, 0, "%d", i+1);
+         int size = snprintf(NULL, 0, "%ld", getFileSize(filename));
+         for (k=0; k<= pre+size+27; k++) {
+             printf("\b"); }
+         printf("Encrypting byte %d out of %ld...", i+1, getFileSize(filename));
         j++;
         if (j >= sizeof(toHash(seed))) {
             j = 0; }
