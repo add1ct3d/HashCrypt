@@ -61,7 +61,7 @@ Using both the file's hex values, and the hashed hex values, the program combine
 
 Contents of Text File: | "hello" | Hex Value of File Contents: |__68 65 6C 6C 6F__ 
 ------------|------------|------------|------------
-__Seed String:__ | __"apple"__ | __Hashed Seed:__ |__A9 2E D0 50 A9 ...>__
+__Seed String:__ | __"apple"__ | __Hashed Seed:__ |__A9 2E D0 50 A9 ....__
 X | X | __Encypted Data:__ |__11 93 3C BC 18__
 
 
