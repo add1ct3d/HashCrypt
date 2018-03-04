@@ -52,13 +52,14 @@ int main (int argc, char* argv[]) {
 void encrypt (char* filename, char* seed) {
 
     // Declare common variables and unsigned char[]
-    int i; int j;
+    int i; int j; int k; int x;
     unsigned char binary[getFileSize(filename)];
     unsigned char hash[sizeof(toHash(seed))];
     unsigned char encrypted[sizeof(toHash(seed)) * getFileSize(filename)];
 
     // Convert hashed seed into unsigned char hash[]
-    int x = toHash(seed);
+    printf("\nHashing seed...");
+    x = toHash(seed);
     j = sizeof(toHash(seed))-1;
     for (size_t i = 0; i < sizeof(x); ++i) {
         unsigned char byte = *((unsigned char *)&x + i);
@@ -66,6 +67,7 @@ void encrypt (char* filename, char* seed) {
         j--; }
 
     // Collect target file contents into unsigned char binary[]
+    printf("\nCollecting file contents...\n");
     FILE *file = fopen(filename, "rb");
     fread(binary, sizeof(char), getFileSize(filename), file);
 
@@ -73,6 +75,11 @@ void encrypt (char* filename, char* seed) {
     j=0;
     for (i=0; i<getFileSize(filename); i++) {
         encrypted[i] = binary[i] + hash[j];
+        int pre = snprintf(NULL, 0, "%d", i+1);
+        int size = snprintf(NULL, 0, "%ld", getFileSize(filename));
+        for (k=0; k<= pre+size+27; k++) {
+            printf("\b"); }
+        printf("Encrypting byte %d out of %ld...", i+1, getFileSize(filename));
         j++;
         if (j >= sizeof(toHash(seed))) {
             j = 0; }
@@ -89,13 +96,14 @@ void encrypt (char* filename, char* seed) {
 void decrypt (char* filename, char* seed) {
 
     // Declare common variables and unsigned char[]
-    int i; int j;
+    int i; int j; int k; int x;
     unsigned char binary[getFileSize(filename)];
     unsigned char hash[sizeof(toHash(seed))];
     unsigned char decrypted[sizeof(toHash(seed)) * getFileSize(filename)];
 
     // Convert hashed seed into unsigned char hash[]
-    int x = toHash(seed);
+    printf("\nHashing seed...");
+    x = toHash(seed);
     j = sizeof(toHash(seed))-1;
     for (size_t i = 0; i < sizeof(x); ++i) {
         unsigned char byte = *((unsigned char *)&x + i);
@@ -103,6 +111,7 @@ void decrypt (char* filename, char* seed) {
         j--; }
 
     // Collect target file contents into unsigned char binary[]
+    printf("\nCollecting file contents...\n");
     FILE *file = fopen(filename, "rb");
     fread(binary, sizeof(char), getFileSize(filename), file);
 
@@ -110,6 +119,11 @@ void decrypt (char* filename, char* seed) {
     j=0;
     for (i=0; i<getFileSize(filename); i++) {
         decrypted[i] = binary[i] - hash[j];
+        int pre = snprintf(NULL, 0, "%d", i+1);
+        int size = snprintf(NULL, 0, "%ld", getFileSize(filename));
+        for (k=0; k<= pre+size+27; k++) {
+            printf("\b"); }
+        printf("Decrypting byte %d out of %ld...", i+1, getFileSize(filename));
         j++;
         if (j >= sizeof(toHash(seed))) {
             j = 0; }
@@ -141,10 +155,9 @@ bool isFile (char* filename) {
 
 // Strip first char '-' from string
 char* stripDash (char* string) {
-    if (string[0] == '-') {
-        return strchr(string, string[1]); }
-    else {
-        return string; }
+    while (string[0] == '-') {
+        string = strchr(string, string[1]); }
+    return string;
 }
 
 // Returns number of bytes in a file
