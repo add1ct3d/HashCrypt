@@ -18,7 +18,7 @@ int main (int argc, char* argv[]) {
 
     // Exit program if command is incomplete
     if (argc < 4) {
-        printf("\nERROR: Unable To Process Command\nExpected Command: gcc hashcrypt.c -encrypt -file.txt -seed\n");
+        printf("\nERROR: Unable To Process Command\nExpected Command: hashcrypt.exe -encrypt -file.txt -seed\n");
         exit(1); }
 
     // Check if file exists
