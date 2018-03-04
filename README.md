@@ -14,12 +14,6 @@ $ git clone https://github.com/Isaacdelly/HashCrypt
 
 # Usage
 
-<h2>Self-Compilation:</h2>
-
-Compile and execute the C code yourself
-
-__Requires a C Compiler or IDE__
-
 Encryption: 
 
 ```
@@ -38,26 +32,6 @@ $ cd HashCrypt
 $ gcc hashcrypt.c
 
 $ a.exe -decrypt -file -seed
-```
-
-<h2>Excecutable</h2>
-
-Execute the pre-compiled `hashcrypt.exe` file
-
-Encryption: 
-
-```
-$ cd HashCrypt
-
-$ hashcrypt.exe -encrypt -file -seed
-```
-
-Decryption: 
-
-```
-$ cd HashCrypt
-
-$ hashcrypt.exe -decrypt -file -seed
 ```
 
 #
