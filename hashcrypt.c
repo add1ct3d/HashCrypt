@@ -16,9 +16,18 @@ long getFileSize (char* filename);
 
 int main (int argc, char* argv[]) {
 
+    if (argc == 2) {
+        if (strcmp(stripDash(argv[1]), "?") == 0) {
+            printf("\na.exe -commmand -file -seed\n\n");
+            printf("-command     'encrypt' or 'decrypt' depending on choice\n");
+            printf("-file        Desired file to be encrypted or decrypted\n");
+            printf("-seed        Secret passphrase that will be used to encrypt the file's data\n");
+            exit(0); }
+    }
+
     // Exit program if command is incomplete
     if (argc < 4) {
-        printf("\nERROR: Unable To Process Command\nExpected Command: hashcrypt.exe -encrypt -file.txt -seed\n");
+        printf("\nERROR: Unable To Process Command\nExpected Command: a.exe -command -file -seed\n");
         exit(1); }
 
     // Check if file exists
@@ -42,7 +51,7 @@ int main (int argc, char* argv[]) {
     else if (strcmp(stripDash(argv[1]), "decrypt") == 0) {
         decrypt(stripDash(argv[2]), seed); }
     else {
-        printf("ERROR: Unable To Process Command\nExpected Command: gcc hashcrypt.c -encrypt -file.txt -seed\n");
+        printf("ERROR: Unable To Process Command\nExpected Command: a.exe -command -file.txt -seed\n");
         exit(1); }
 
     return 0;
@@ -75,11 +84,7 @@ void encrypt (char* filename, char* seed) {
     j=0;
     for (i=0; i<getFileSize(filename); i++) {
         encrypted[i] = binary[i] + hash[j];
-        int pre = snprintf(NULL, 0, "%d", i+1);
-        int size = snprintf(NULL, 0, "%ld", getFileSize(filename));
-        for (k=0; k<= pre+size+27; k++) {
-            printf("\b"); }
-        printf("Encrypting byte %d out of %ld...", i+1, getFileSize(filename));
+        printf("\n%02X = %02X + %02X", encrypted[i], binary[i], hash[j]);
         j++;
         if (j >= sizeof(toHash(seed))) {
             j = 0; }
