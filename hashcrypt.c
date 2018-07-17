@@ -54,7 +54,7 @@ int main (int argc, char* argv[]) {
         printf("ERROR: Unable To Process Command\nExpected Command: a.exe -command -file.txt -seed\n");
         exit(-1); }
 
-    return 0;
+    return 1;
 }
 
 // Encrypt File
@@ -99,8 +99,6 @@ void encrypt (char* filename, char* seed) {
     encrypted_data = fopen(filename,"wb");
     fwrite(encrypted, sizeof(binary), 1, encrypted_data);
     printf("\n%s encrypted successfully\n", filename);
-
-    return 1;
 }
 
 // Decrypt File
@@ -145,8 +143,6 @@ void decrypt (char* filename, char* seed) {
     decrypted_data = fopen(filename,"wb");
     fwrite(decrypted, sizeof(binary), 1, decrypted_data);
     printf("\n%s decrypted successfully\n", filename);
-
-    return 1;
 }
 
 // Hash seed using CRC-32 hashing algorithm
