@@ -21,7 +21,7 @@ int main (int argc, char* argv[]) {
             printf("\nExample Usage: a.exe -commmand -file -seed\n\n");
             printf("-command     'encrypt' or 'decrypt' depending on desired outcome\n");
             printf("-file        file path to be encrypted or decrypted\n");
-            printf("-seed        secret passphrase that will be used to encrypt the file's data\n");
+            printf("-seed        secret passphrase that will be used to encrypt or decrypt the file's data\n");
             exit(0); }
     }
 
