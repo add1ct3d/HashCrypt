@@ -1,6 +1,6 @@
 // HashCrypt Secure File Encryption and Decryption
 // Made by Isaac Delly
-// https://github.com/Isaacdelly/HashCrypt
+// https://github.com/isaacdelly/HashCrypt
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,22 +18,22 @@ int main (int argc, char* argv[]) {
 
     if (argc == 2) {
         if (strcmp(stripDash(argv[1]), "?") == 0) {
-            printf("\na.exe -commmand -file -seed\n\n");
-            printf("-command     'encrypt' or 'decrypt' depending on choice\n");
-            printf("-file        Desired file to be encrypted or decrypted\n");
-            printf("-seed        Secret passphrase that will be used to encrypt the file's data\n");
+            printf("\nExample Usage: a.exe -commmand -file -seed\n\n");
+            printf("-command     'encrypt' or 'decrypt' depending on desired outcome\n");
+            printf("-file        file path to be encrypted or decrypted\n");
+            printf("-seed        secret passphrase that will be used to encrypt the file's data\n");
             exit(0); }
     }
 
     // Exit program if command is incomplete
     if (argc < 4) {
         printf("\nERROR: Unable To Process Command\nExpected Command: a.exe -command -file -seed\n");
-        exit(1); }
+        exit(-1); }
 
     // Check if file exists
     if (!isFile(stripDash(argv[2]))) {
         printf("ERROR: Error Locating File %s\n", stripDash(argv[2]));
-        exit(1); }
+        exit(-1); }
 
     // Combine seed args to one string
     char* seed = stripDash(argv[3]);
@@ -52,7 +52,7 @@ int main (int argc, char* argv[]) {
         decrypt(stripDash(argv[2]), seed); }
     else {
         printf("ERROR: Unable To Process Command\nExpected Command: a.exe -command -file.txt -seed\n");
-        exit(1); }
+        exit(-1); }
 
     return 0;
 }
@@ -99,6 +99,8 @@ void encrypt (char* filename, char* seed) {
     encrypted_data = fopen(filename,"wb");
     fwrite(encrypted, sizeof(binary), 1, encrypted_data);
     printf("\n%s encrypted successfully\n", filename);
+
+    return 1;
 }
 
 // Decrypt File
@@ -143,6 +145,8 @@ void decrypt (char* filename, char* seed) {
     decrypted_data = fopen(filename,"wb");
     fwrite(decrypted, sizeof(binary), 1, decrypted_data);
     printf("\n%s decrypted successfully\n", filename);
+
+    return 1;
 }
 
 // Hash seed using CRC-32 hashing algorithm
