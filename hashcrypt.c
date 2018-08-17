@@ -2,17 +2,7 @@
 // Made by Isaac Delly
 // https://github.com/isaacdelly/HashCrypt
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-
-void encrypt (char*, char*);
-void decrypt (char* filename, char* seed);
-unsigned long toHash (char* seed);
-bool isFile (char* filename);
-char* stripDash (char* string);
-long getFileSize (char* filename);
+#include "header.h"
 
 int main (int argc, char* argv[]) {
 
@@ -22,24 +12,27 @@ int main (int argc, char* argv[]) {
             printf("-command     'encrypt' or 'decrypt' depending on desired outcome\n");
             printf("-file        file path to be encrypted or decrypted\n");
             printf("-seed        secret passphrase that will be used to encrypt or decrypt the file's data\n");
-            exit(0); }
+            exit(0);
+        }
     }
 
     // Exit program if command is incomplete
     if (argc < 4) {
         printf("\nERROR: Unable To Process Command\nExpected Command: a.exe -command -file -seed\n");
-        exit(-1); }
+        exit(-1);
+    }
 
     // Check if file exists
     if (!isFile(stripDash(argv[2]))) {
         printf("ERROR: Error Locating File %s\n", stripDash(argv[2]));
-        exit(-1); }
+        exit(-1);
+    }
 
     // Combine seed args to one string
     char* seed = stripDash(argv[3]);
     if (argc > 4) {
         int i;
-        for (i=4; i < argc; i++) {
+        for (i = 4; i < argc; i++) {
             strcat(seed, " ");
             strcat(seed, stripDash(argv[i]));
         }
@@ -47,12 +40,13 @@ int main (int argc, char* argv[]) {
 
     // Call encrypt or decrypt
     if (strcmp(stripDash(argv[1]), "encrypt") == 0) {
-        encrypt(stripDash(argv[2]), seed); }
-    else if (strcmp(stripDash(argv[1]), "decrypt") == 0) {
-        decrypt(stripDash(argv[2]), seed); }
-    else {
+        encrypt(stripDash(argv[2]), seed);
+    } else if (strcmp(stripDash(argv[1]), "decrypt") == 0) {
+        decrypt(stripDash(argv[2]), seed);
+    } else {
         printf("ERROR: Unable To Process Command\nExpected Command: a.exe -command -file.txt -seed\n");
-        exit(-1); }
+        exit(-1);
+    }
 
     return 1;
 }
@@ -69,11 +63,12 @@ void encrypt (char* filename, char* seed) {
     // Convert hashed seed into unsigned char hash[]
     printf("\nHashing seed...");
     x = toHash(seed);
-    j = sizeof(toHash(seed))-1;
+    j = sizeof(toHash(seed)) - 1;
     for (size_t i = 0; i < sizeof(x); ++i) {
         unsigned char byte = *((unsigned char *)&x + i);
         hash[j] = (unsigned)byte;
-        j--; }
+        j--;
+    }
 
     // Collect target file contents into unsigned char binary[]
     printf("\nCollecting file contents...\n");
@@ -81,17 +76,19 @@ void encrypt (char* filename, char* seed) {
     fread(binary, sizeof(char), getFileSize(filename), file);
 
     // Overflow binary[] + hash[] = encrypted[] to create an unidentifiable hex value
-    j=0;
-    for (i=0; i<getFileSize(filename); i++) {
+    j = 0;
+    for (i = 0; i < getFileSize(filename); i++) {
         encrypted[i] = binary[i] + hash[j];
-         int pre = snprintf(NULL, 0, "%d", i+1);
+         int pre = snprintf(NULL, 0, "%d", i + 1);
          int size = snprintf(NULL, 0, "%ld", getFileSize(filename));
-         for (k=0; k<= pre+size+27; k++) {
-             printf("\b"); }
-         printf("Encrypting byte %d out of %ld...", i+1, getFileSize(filename));
+         for (k = 0; k <= pre + size + 27; k++) {
+             printf("\b");
+         }
+         printf("Encrypting byte %d out of %ld...", i + 1, getFileSize(filename));
         j++;
         if (j >= sizeof(toHash(seed))) {
-            j = 0; }
+            j = 0;
+        }
     }
 
     // Write encrypted data to file
@@ -113,11 +110,12 @@ void decrypt (char* filename, char* seed) {
     // Convert hashed seed into unsigned char hash[]
     printf("\nHashing seed...");
     x = toHash(seed);
-    j = sizeof(toHash(seed))-1;
+    j = sizeof(toHash(seed)) - 1;
     for (size_t i = 0; i < sizeof(x); ++i) {
         unsigned char byte = *((unsigned char *)&x + i);
         hash[j] = (unsigned)byte;
-        j--; }
+        j--;
+    }
 
     // Collect target file contents into unsigned char binary[]
     printf("\nCollecting file contents...\n");
@@ -125,17 +123,19 @@ void decrypt (char* filename, char* seed) {
     fread(binary, sizeof(char), getFileSize(filename), file);
 
     // Underflow binary[] - hash[] = decrypted[] to revert back to original hex value
-    j=0;
-    for (i=0; i<getFileSize(filename); i++) {
+    j = 0;
+    for (i = 0; i < getFileSize(filename); i++) {
         decrypted[i] = binary[i] - hash[j];
-        int pre = snprintf(NULL, 0, "%d", i+1);
+        int pre = snprintf(NULL, 0, "%d", i + 1);
         int size = snprintf(NULL, 0, "%ld", getFileSize(filename));
-        for (k=0; k<= pre+size+27; k++) {
-            printf("\b"); }
-        printf("Decrypting byte %d out of %ld...", i+1, getFileSize(filename));
+        for (k = 0; k <= pre + size + 27; k++) {
+            printf("\b");
+        }
+        printf("Decrypting byte %d out of %ld...", i + 1, getFileSize(filename));
         j++;
         if (j >= sizeof(toHash(seed))) {
-            j = 0; }
+            j = 0;
+        }
     }
 
     // Write decrypted data to file
@@ -147,7 +147,7 @@ void decrypt (char* filename, char* seed) {
 
 // Hash seed using CRC-32 hashing algorithm
 unsigned long toHash (char* seed) {
-     return CRC32(seed);
+     return (unsigned long) CRC32(seed);
 }
 
 // Checks if file exists
@@ -156,18 +156,20 @@ bool isFile (char* filename) {
     file = fopen(filename, "rb");
     if (file == NULL) {
         fclose(file);
-        return false; }
-    else {
+        return false;
+    } else {
         fclose(file);
-        return true; }
+        return true;
+    }
 }
 
 // Strip first char '-' from string
 char* stripDash (char* string) {
     if (string[0] == '-') {
-        return strchr(string, string[1]); }
-    else {
-        return string; }
+        return strchr(string, string[1]);
+    } else {
+        return string;
+    }
 }
 
 // Returns number of bytes in a file

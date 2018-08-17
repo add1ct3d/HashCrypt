@@ -1,9 +1,7 @@
 // CRC-32 HASHING ALGORITHM TAKEN FROM:
 // https://rosettacode.org/wiki/CRC-32#Implementation_2
 
-#include <inttypes.h>
-#include <stdio.h>
-#include <string.h>
+#include "header.h"
 
 uint32_t rc_crc32(uint32_t crc, const char *buf, size_t len) {
 	static uint32_t table[256];
