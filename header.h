@@ -7,8 +7,6 @@
 #include <string.h>
 #include <stdbool.h>
 #include <inttypes.h>
-#include <stdio.h>
-#include <string.h>
 
 void encrypt (char*, char*);
 void decrypt (char* filename, char* seed);
