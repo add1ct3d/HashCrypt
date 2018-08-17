@@ -8,7 +8,7 @@ int main (int argc, char* argv[]) {
 
     if (argc == 2) {
         if (strcmp(stripDash(argv[1]), "?") == 0) {
-            printf("\nExample Usage: a.exe -commmand -file -seed\n\n");
+            printf("\nExample Usage: hashcrypt -commmand -file -seed\n\n");
             printf("-command     'encrypt' or 'decrypt' depending on desired outcome\n");
             printf("-file        file path to be encrypted or decrypted\n");
             printf("-seed        secret passphrase that will be used to encrypt or decrypt the file's data\n");
@@ -18,7 +18,7 @@ int main (int argc, char* argv[]) {
 
     // Exit program if command is incomplete
     if (argc < 4) {
-        printf("\nERROR: Unable To Process Command\nExpected Command: a.exe -command -file -seed\n");
+        printf("\nERROR: Unable To Process Command\nExpected Command: hashcrypt -command -file -seed\n");
         exit(-1);
     }
 
@@ -44,7 +44,7 @@ int main (int argc, char* argv[]) {
     } else if (strcmp(stripDash(argv[1]), "decrypt") == 0) {
         decrypt(stripDash(argv[2]), seed);
     } else {
-        printf("ERROR: Unable To Process Command\nExpected Command: a.exe -command -file.txt -seed\n");
+        printf("ERROR: Unable To Process Command\nExpected Command: hashcrypt -command -file.txt -seed\n");
         exit(-1);
     }
 
