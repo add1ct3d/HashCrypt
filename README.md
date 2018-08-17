@@ -19,9 +19,9 @@ Encryption:
 ```
 $ cd HashCrypt
 
-$ gcc hashcrypt.c
+$ gcc -I./ -o hashcrypt.c hash.c
 
-$ a.exe -encrypt -file -seed
+$ hashcrypt -encrypt -file -seed
 ```
 
 Decryption: 
@@ -29,9 +29,9 @@ Decryption:
 ```
 $ cd HashCrypt
 
-$ gcc hashcrypt.c
+$ gcc -I./ -o hashcrypt.c hash.c
 
-$ a.exe -decrypt -file -seed
+$ hashcrypt -decrypt -file -seed
 ```
 
 #
