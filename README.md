@@ -19,7 +19,7 @@ Encryption:
 ```
 $ cd HashCrypt
 
-$ gcc -I./ -o hashcrypt.c hash.c
+$ gcc -I./ -o hashcrypt hashcrypt.c hash.c
 
 $ hashcrypt -encrypt -file -seed
 ```
@@ -29,7 +29,7 @@ Decryption:
 ```
 $ cd HashCrypt
 
-$ gcc -I./ -o hashcrypt.c hash.c
+$ gcc -I./ -o hashcrypt hashcrypt.c hash.c
 
 $ hashcrypt -decrypt -file -seed
 ```
