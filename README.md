@@ -43,7 +43,7 @@ This project requires execution-time arguments to operate.
 Type `-?` for help.
 
 ```
-a.exe -commmand -file -seed
+hashcrypt -commmand -file -seed
 
 -command     'encrypt' or 'decrypt' depending on desired outcome
 -file        file path to be encrypted or decrypted
