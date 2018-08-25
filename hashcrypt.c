@@ -1,6 +1,6 @@
 // HashCrypt: Secure File Encryption and Decryption
 // Made by Isaac Delly
-// https://github.com/isaacdelly/HashCrypt
+// https://github.com/Isaacdelly/HashCrypt
 
 #include "header.h"
 
