@@ -1,4 +1,4 @@
-// HashCrypt Secure File Encryption and Decryption
+// HashCrypt: Secure File Encryption and Decryption
 // Made by Isaac Delly
 // https://github.com/isaacdelly/HashCrypt
 
