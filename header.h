@@ -12,4 +12,4 @@ void decrypt (char* filename, char* seed);
 bool isFile (char* filename);
 char* stripDash (char* string);
 long getFileSize (char* filename);
-unsigned int crc32(const char *s);
+unsigned int toHash(const char* buf);
