@@ -1,21 +1,20 @@
-// CRC-32 HASHING ALGORITHM TAKEN FROM:
-// https://rosettacode.org/wiki/CRC-32#Implementation_2
+// CRC-32 Hashing Algorithm
 
 #include "header.h"
 
-uint32_t rc_crc32(uint32_t crc, const char *buf, size_t len) {
-	static uint32_t table[256];
+unsigned int crc32(const char* buf) {
+    unsigned int len = strlen(buf);
+    unsigned int crc = 0;
+	static unsigned int table[256];
 	static int have_table = 0;
-	uint32_t rem;
-	uint8_t octet;
+	unsigned int rem;
+	unsigned char octet;
 	int i, j;
 	const char *p, *q;
 
-	/* This check is not thread safe; there is no mutex. */
 	if (have_table == 0) {
-		/* Calculate CRC table. */
 		for (i = 0; i < 256; i++) {
-			rem = i;  /* remainder from polynomial division */
+			rem = i;  // Stores remainder from division
 			for (j = 0; j < 8; j++) {
 				if (rem & 1) {
 					rem >>= 1;
@@ -31,12 +30,8 @@ uint32_t rc_crc32(uint32_t crc, const char *buf, size_t len) {
 	crc = ~crc;
 	q = buf + len;
 	for (p = buf; p < q; p++) {
-		octet = *p;  /* Cast to unsigned octet. */
+		octet = *p;  // Cast to unsigned octet
 		crc = (crc >> 8) ^ table[(crc & 0xff) ^ octet];
 	}
 	return ~crc;
-}
-
-int CRC32(const char *s) {
-	return rc_crc32(0, s, strlen(s));
 }

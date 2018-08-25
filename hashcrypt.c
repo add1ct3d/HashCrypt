@@ -147,7 +147,7 @@ void decrypt (char* filename, char* seed) {
 
 // Hash seed using CRC-32 hashing algorithm
 unsigned long toHash (char* seed) {
-     return (unsigned long) CRC32(seed);
+    return crc32(seed);
 }
 
 // Checks if file exists
