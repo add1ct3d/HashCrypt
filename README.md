@@ -17,7 +17,7 @@ $ git clone https://github.com/Isaacdelly/HashCrypt
 Encryption: 
 
 ```
-$ cd HashCrypt
+$ cd HashCrypt\src
 
 $ gcc -I./ -o hashcrypt hashcrypt.c hash.c
 
@@ -27,7 +27,7 @@ $ hashcrypt -encrypt -file -seed
 Decryption: 
 
 ```
-$ cd HashCrypt
+$ cd HashCrypt\src
 
 $ gcc -I./ -o hashcrypt hashcrypt.c hash.c
 
