@@ -2,9 +2,10 @@
 
 #include "header.h"
 
-unsigned int crc32(const char* buf) {
+// Hash seed using CRC-32 hashing algorithm
+unsigned int toHash(const char* buf) {
 	unsigned int len = strlen(buf);
-    	unsigned int crc = 0;
+    unsigned int crc = 0;
 	static unsigned int table[256];
 	static int have_table = 0;
 	unsigned int rem;

@@ -145,11 +145,6 @@ void decrypt (char* filename, char* seed) {
     printf("\n%s decrypted successfully\n", filename);
 }
 
-// Hash seed using CRC-32 hashing algorithm
-unsigned long toHash (char* seed) {
-    return crc32(seed);
-}
-
 // Checks if file exists
 bool isFile (char* filename) {
     FILE *file;

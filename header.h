@@ -9,7 +9,6 @@
 
 void encrypt (char*, char*);
 void decrypt (char* filename, char* seed);
-unsigned long toHash (char* seed);
 bool isFile (char* filename);
 char* stripDash (char* string);
 long getFileSize (char* filename);
