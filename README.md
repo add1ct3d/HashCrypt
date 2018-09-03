@@ -22,7 +22,9 @@ $ cd HashCrypt\src
 $ gcc -I./ -o hashcrypt hashcrypt.c hash.c
 ```
 
-Otherwise, a pre-compiled binary is availiable at <a href="www.github.com/isaacdelly/locker/bin/hashcrypt.exe" target="_blank">/bin/hashcrypt.exe"</a>
+<b>hashcrypt.exe</b> is generated in HashCrypt\src and is used to interact with the program
+
+A pre-compiled binary is also availiable at <a href="https://github.com/Isaacdelly/HashCrypt/tree/master/bin" target="_blank">/bin</a>
 
 #
 
