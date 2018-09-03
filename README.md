@@ -12,25 +12,31 @@ $ git clone https://github.com/Isaacdelly/HashCrypt
 
 #
 
-# Usage
+# Complilation
 
-Encryption: 
+If you have the GCC C/C++ compiler:
 
 ```
 $ cd HashCrypt\src
 
 $ gcc -I./ -o hashcrypt hashcrypt.c hash.c
+```
 
+Otherwise, a pre-compiled binary is availiable at <a href="www.github.com/isaacdelly/locker/bin/hashcrypt.exe" target="_blank">/bin/hashcrypt.exe"</a>
+
+#
+
+# Usage
+
+Encryption: 
+
+```
 $ hashcrypt -encrypt -file -seed
 ```
 
 Decryption: 
 
 ```
-$ cd HashCrypt\src
-
-$ gcc -I./ -o hashcrypt hashcrypt.c hash.c
-
 $ hashcrypt -decrypt -file -seed
 ```
 
