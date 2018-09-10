@@ -7,7 +7,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-void encrypt (char*, char*);
+void encrypt (char* filename, char* seed);
 void decrypt (char* filename, char* seed);
 bool isFile (char* filename);
 char* stripDash (char* string);
