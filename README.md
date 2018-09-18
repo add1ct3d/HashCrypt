@@ -7,7 +7,7 @@ Secure file encryption and decryption through salted passphrase hashing
 # Installation
 
 ```
-git clone https://github.com/Isaacdelly/HashCrypt
+git clone https://github.com/Isaacdelly/HashCrypt.git HashCrypt
 ```
 
 #
