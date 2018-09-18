@@ -7,7 +7,7 @@ Secure file encryption and decryption through salted passphrase hashing
 # Installation
 
 ```
-git clone https://github.com/Isaacdelly/HashCrypt.git HashCrypt
+git clone https://github.com/Isaacdelly/HashCrypt.git hashcrypt
 ```
 
 #
@@ -17,7 +17,7 @@ git clone https://github.com/Isaacdelly/HashCrypt.git HashCrypt
 If you have the GCC C/C++ compiler:
 
 ```
-cd HashCrypt\src
+cd hashcrypt\src
 
 gcc -I./ -o hashcrypt hashcrypt.c hash.c
 ``` 
