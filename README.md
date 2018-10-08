@@ -22,7 +22,7 @@ cd hashcrypt/src
 gcc -I./ -o hashcrypt hashcrypt.c hash.c
 ``` 
 
-<b>hashcrypt.exe</b> is generated in HashCrypt\src and is used to interact with the program
+<b>hashcrypt.exe</b> is generated in HashCrypt/src and is used to interact with the program
 
 
 #
