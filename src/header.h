@@ -1,6 +1,5 @@
-#ifndef header
-#define header
-#endif
+#ifndef HEADER_H
+#define HEADER_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,3 +12,5 @@ bool isFile (char* filename);
 char* stripDash (char* string);
 long getFileSize (char* filename);
 unsigned int toHash(const char* buf);
+
+#endif
