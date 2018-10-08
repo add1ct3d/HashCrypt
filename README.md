@@ -17,7 +17,7 @@ git clone https://github.com/Isaacdelly/HashCrypt.git hashcrypt
 If you have the GCC C/C++ compiler:
 
 ```
-cd hashcrypt\src
+cd hashcrypt/src
 
 gcc -I./ -o hashcrypt hashcrypt.c hash.c
 ``` 
