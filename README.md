@@ -24,9 +24,6 @@ gcc -I./ -o hashcrypt hashcrypt.c hash.c
 
 <b>hashcrypt.exe</b> is generated in HashCrypt\src and is used to interact with the program
 
-<br/>
-
-A pre-compiled binary is also availiable at <a href="https://github.com/Isaacdelly/HashCrypt/tree/master/bin" target="_blank">/bin</a>
 
 #
 
